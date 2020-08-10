@@ -59,7 +59,7 @@ class Player():
 
 
 
-#game logic
+#game logic/game start
 
 '''
 1. create two player objects
@@ -78,7 +78,7 @@ class Player():
 player_one = Player('one')
 player_two = Player('two')
 
-new_deck = deck()
+new_deck = Deck()
 new_deck.shuffle()
 
 for x in range(26):
@@ -119,19 +119,19 @@ while game_on:
     at_war = True
 
     while at_war:
-        if player_one_cards[-1].value > player_two_cards[-1]:
+        if player_one_cards[-1].value > player_two_cards[-1].value:
 
             at_war = False
 
-            player_one.all_cards.add_cards(player_one_cards)
-            player_one.all_cards.add_cards(player_two_cards)
+            player_one.add_cards(player_one_cards)
+            player_one.add_cards(player_two_cards)
 
-        elif player_two_cards[-1].value > player_one_cards[-1]:
+        elif player_two_cards[-1].value > player_one_cards[-1].value:
 
             at_war = False
 
-            player_two.all_cards.add_cards(player_two_cards)
-            player_two.all_cards.add_cards(player_one_cards)
+            player_two.add_cards(player_two_cards)
+            player_two.add_cards(player_one_cards)
 
         else:
             print(" :::WAR::: ")
@@ -148,4 +148,7 @@ while game_on:
                 game_on = False #stops the main game loop from running since the game is already done.
                 break
 
-        
+            else:
+                for num in range(3):
+                    player_one_cards.append(player_one.remove_one())
+                    player_two_cards.append(player_two.remove_one())
