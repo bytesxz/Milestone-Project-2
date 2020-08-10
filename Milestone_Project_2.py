@@ -1,6 +1,7 @@
 '''
 
 War card game inside of python.
+game pretty much plays itself
 
 '''
 import random
@@ -75,80 +76,85 @@ class Player():
 
 '''
 
-player_one = Player('one')
-player_two = Player('two')
+def main_game():
+    player_one = Player('one')
+    player_two = Player('two')
 
-new_deck = Deck()
-new_deck.shuffle()
+    new_deck = Deck()
+    new_deck.shuffle()
 
-for x in range(26):
-    player_one.add_cards(new_deck.deal_one())
-    player_two.add_cards(new_deck.deal_one())
+    for x in range(26):
+        player_one.add_cards(new_deck.deal_one())
+        player_two.add_cards(new_deck.deal_one())
 
 
-game_on = True
-round_num = 0
+    game_on = True
+    round_num = 0
 
-while game_on:
+    while game_on:
     
-    round_num += 1
-    print(f'Round {round_num}')
+        round_num += 1
+        print(f'Round {round_num}')
 
 
-    if len(player_one.all_cards) == 0:
-        print('player one has lost the game!')
-        game_on = False
-        break # redundant
+        if len(player_one.all_cards) == 0:
+            print('player one has lost the game!')
+            game_on = False
+            break # redundant
 
 
-    if len(player_two.all_cards) == 0:
-        print('player two has lost the game!')
-        game_on = False
-        break
+        if len(player_two.all_cards) == 0:
+            print('player two has lost the game!')
+            game_on = False
+            break
 
-    #reset, start new round
+        #reset, start new round
 
-    player_one_cards = []
-    player_one_cards.append(player_one.remove_one())
+        player_one_cards = []
+        player_one_cards.append(player_one.remove_one())
 
-    player_two_cards = []
-    player_two_cards.append(player_two.remove_one())
+        player_two_cards = []
+        player_two_cards.append(player_two.remove_one())
 
-    #while at "war" stage
+        #while at "war" stage
 
-    at_war = True
+        at_war = True
 
-    while at_war:
-        if player_one_cards[-1].value > player_two_cards[-1].value:
+        while at_war:
+            if player_one_cards[-1].value > player_two_cards[-1].value:
 
-            at_war = False
+                at_war = False
 
-            player_one.add_cards(player_one_cards)
-            player_one.add_cards(player_two_cards)
+                player_one.add_cards(player_one_cards)
+                player_one.add_cards(player_two_cards)
 
-        elif player_two_cards[-1].value > player_one_cards[-1].value:
+            elif player_two_cards[-1].value > player_one_cards[-1].value:
 
-            at_war = False
+                at_war = False
 
-            player_two.add_cards(player_two_cards)
-            player_two.add_cards(player_one_cards)
-
-        else:
-            print(" :::WAR::: ")
-
-            if len(player_one.all_cards) < 3:
-                print("Player one is unable to declare war.")
-                print("Player two wins this game.")
-                game_on = False #stops the main game loop from running since the game is already done.
-                break
-
-            elif len(player_two.all_cards) < 3:
-                print("Player two is unable to declare war.")
-                print("Player one wins this game.")
-                game_on = False #stops the main game loop from running since the game is already done.
-                break
+                player_two.add_cards(player_two_cards)#did a big dumb here fack
+                player_two.add_cards(player_one_cards)
 
             else:
-                for num in range(3):
-                    player_one_cards.append(player_one.remove_one())
-                    player_two_cards.append(player_two.remove_one())
+                print(" :::WAR::: ")
+
+                if len(player_one.all_cards) < 3:
+                    print("Player one is unable to declare war.")
+                    print("Player two wins this game.")
+                    game_on = False #stops the main game loop from running since the game is already done.
+                    break
+
+                elif len(player_two.all_cards) < 3:
+                    print("Player two is unable to declare war.")
+                    print("Player one wins this game.")
+                    game_on = False #stops the main game loop from running since the game is already done.
+                    break
+
+                else:
+                    for num in range(3):
+                        player_one_cards.append(player_one.remove_one())
+                        player_two_cards.append(player_two.remove_one())
+
+
+for num in range(20):
+    main_game()
